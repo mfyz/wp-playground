@@ -1,10 +1,15 @@
 # WordPress Playground
 
-To set up wordpress container:
+1) To set up wordpress container:
 `docker-compose up -d`
 
-Create admin account, install and activate a theme and plugins,
+Once container is up, check http://localhost:6001 (wordpress installation page should show up).
+
+2) Create admin account, install and activate a theme and plugins
 `node install.sh`
+
+3) Populate some pages and posts (see populate-data.js)
+`node populate.sh`
 
 To stop and destroy
 `docker-compose down -v`
