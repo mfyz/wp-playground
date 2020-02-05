@@ -1,0 +1,46 @@
+version: '3'
+
+services:
+  wp:
+    image: wordpress:latest
+    ports:
+      - ${IP}:6001:80
+    volumes:
+      - wordpress:/var/www/html
+      - ./config/php.conf.ini:/usr/local/etc/php/conf.d/conf.ini
+      # - ./mytheme:/var/www/html/wp-content/themes/mytheme
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_NAME: "${DB_NAME}"
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: "${DB_ROOT_PASSWORD}"
+    depends_on:
+      - db
+    links:
+      - db
+
+  db:
+    image: mysql:latest
+    ports:
+      - ${IP}:3308:3306
+    command: [
+        '--default_authentication_plugin=mysql_native_password',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+    ]
+    environment:
+      MYSQL_DATABASE: "${DB_NAME}"
+      MYSQL_ROOT_PASSWORD: "${DB_ROOT_PASSWORD}"
+
+  # Important, for theme or plugin development, you need to mount
+  # the same host folders to the target folders in both wp and wpcli
+  # containers in order to use wpcli properly with these theme/plugins.
+  wpcli:
+    image: wordpress:cli
+    volumes:
+      - wordpress:/var/www/html/
+      # - ./mytheme:/var/www/html/wp-content/themes/mytheme
+
+volumes:
+  wordpress:
+  db_data:
