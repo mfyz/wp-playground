@@ -44,6 +44,9 @@ const main = async () => {
 
 	// console.log(`==> ${cFgYellow}Activate the theme${cReset}`)
 	// await runCmd(`${wpcli} theme activate mytheme`)
+	
+	console.log(`==> ${cFgYellow}Setting permalink structure${cReset}`)
+	await runCmd(`${wpcli} rewrite structure '/%postname%/' --hard`)
 
 	// Other wp options to change
 	// wp option update page_on_front 5
